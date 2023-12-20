@@ -1,23 +1,24 @@
 from Linked_List import Yield
 run_cases = [
-    ("Bow", ["Sword", "Bow"]),
-    ("Axe", ["Sword", "Bow", "Axe"]),
-    ("Staff", ["Sword", "Bow", "Axe", "Staff"]),
+    ("Bow", ["Bow", "Sword"]),
+    ("Axe", ["Axe", "Bow", "Sword"]),
+    ("Staff", ["Staff", "Axe", "Bow", "Sword"]),
 ]
 
 submit_cases = run_cases + [
-    ("Spear", ["Sword", "Bow", "Axe", "Staff", "Spear"]),
-    ("Dagger", ["Sword", "Bow", "Axe", "Staff", "Spear", "Dagger"]),
+    ("Spear", ["Spear", "Staff", "Axe", "Bow", "Sword"]),
+    ("Dagger", ["Dagger", "Spear", "Staff", "Axe", "Bow", "Sword"]),
 ]
 
 
 def test(linked_list, input, expected_state):
     print("---------------------------------")
     print(f"Linked List: {linked_list}")
-    print(f"Adding to tail: {input}")
+    print(f"Adding to head: {input}")
     print(f"Expecting: {expected_state}")
-    linked_list.add_to_tail(Yield.Node(input))
+    node = Yield.Node(input)
     try:
+        linked_list.add_to_head(node)
         result = linked_list_to_list(linked_list)
     except Exception as e:
         result = f"Error: {e}"
@@ -41,7 +42,7 @@ def main():
     passed = 0
     failed = 0
     linked_list = Yield.LinkedList()
-    linked_list.add_to_tail(Yield.Node("Sword"))
+    linked_list.head = Yield.Node("Sword")
     for test_case in test_cases:
         correct = test(linked_list, *test_case)
         if correct:

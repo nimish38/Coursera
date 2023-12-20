@@ -2,6 +2,13 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
+    def add_to_head(self, node):
+        if self.head:
+            node.next = self.head
+            self.head = node
+        else:
+            self.head = node
+
     def add_to_tail(self, node):
         if self.head:
             currNode = self.head
