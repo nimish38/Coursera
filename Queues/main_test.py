@@ -1,4 +1,4 @@
-from Queue import Queue
+from Queues import Queue
 run_cases = [
     ("push", "Bow", ["Bow"], None),
     ("push", "Sword", ["Sword", "Bow"], None),
