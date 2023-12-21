@@ -1,11 +1,10 @@
 class LLQueue:
-    def add_to_head(self, node):
-        if self.head is None:
-            self.head = node
-            self.tail = node
-            return
-        node.set_next(self.head)
-        self.head = node
+    def remove_from_head(self):
+        if self.head:
+            node = self.head
+            self.head = self.head.next
+            return node
+        return None
 
     def add_to_tail(self, node):
         if self.head is None:

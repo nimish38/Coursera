@@ -1,58 +1,64 @@
-import random
-import time
 from Linked_List import LLQ
 
 run_cases = [
-    (10, "Healing Potion", "Bandage"),
-    (100, "Bandage", "Bandage"),
-    (1000, "Bandage", "Bandage"),
-    (10000, "Healing Potion", "Bandage"),
+    (
+        ["Dagger", "Spear", "Staff", "Axe", "Bow", "Sword"],
+        ["Spear", "Staff", "Axe", "Bow", "Sword"],
+        "Dagger",
+    ),
+    (
+        ["Spear", "Staff", "Axe", "Bow", "Sword"],
+        ["Staff", "Axe", "Bow", "Sword"],
+        "Spear",
+    ),
+    (["Staff", "Axe", "Bow", "Sword"], ["Axe", "Bow", "Sword"], "Staff"),
 ]
 
 submit_cases = run_cases + [
-    (12000, "Bandage", "Bandage"),
+    (["Axe"], [], "Axe"),
+    (["Axe", "Bow", "Sword"], ["Bow", "Sword"], "Axe"),
+    (["Bow", "Sword"], ["Sword"], "Bow"),
 ]
 
 
-def test(num_items, first_item, last_item):
+def test(linked_list, expected_state, expected_head):
     print("---------------------------------")
-    print(f"Adding {num_items} items to a linked list's head")
-    linked_list = LLQ.LLQueue()
-    timeout = 1
-    start = time.time()
-    for item in get_items(num_items):
-        linked_list.add_to_head(LLQ.Node(item))
-
-    print(f"Adding {num_items} items to a linked list's tail")
-    linked_list2 = LLQ.LLQueue()
-    for item in get_items(num_items):
-        linked_list2.add_to_tail(LLQ.Node(item))
-    end = time.time()
-
-    print(f"Expecting to complete in less than {timeout * 1000} milliseconds")
-    if (end - start) < timeout:
-        print(f"Test completed in less than {timeout * 1000} milliseconds!")
-    else:
+    print(f"Linked List: {linked_list}")
+    print(f" - Removing Head")
+    print(f"Expected Head: {expected_head}")
+    print(f"Expected List: {expected_state}")
+    try:
+        head = linked_list.remove_from_head()
+        result = linked_list_to_list(linked_list)
+    except Exception as e:
+        result = f"Error: {e}"
         print("Fail")
-        print(f"Test took too long ({(end - start) * 1000} milliseconds). Speed it up!")
         return False
+    print(f"Actual Head: {head}")
+    print(f"Actual List: {result}\n")
+    if result == expected_state and head.val == expected_head:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
-    print("\nChecking the first linked list")
-    if not check_links(linked_list, first_item, last_item, num_items):
-        return False
-    print("\nChecking the second linked list")
-    if not check_links(linked_list2, last_item, first_item, num_items):
-        return False
 
-    print("\nPass")
-    return True
+def linked_list_to_list(linked_list):
+    result = []
+    for node in linked_list:
+        result.append(node.val)
+
+    return result
 
 
 def main():
     passed = 0
     failed = 0
     for test_case in test_cases:
-        correct = test(*test_case)
+        linked_list = LLQ.LLQueue()
+        for item in test_case[0]:
+            linked_list.add_to_tail(LLQ.Node(item))
+        correct = test(linked_list, test_case[1], test_case[2])
         if correct:
             passed += 1
         else:
@@ -62,45 +68,6 @@ def main():
     else:
         print("============= FAIL ==============")
     print(f"{passed} passed, {failed} failed")
-
-
-def get_items(num):
-    random.seed(1)
-    options = ["Healing Potion", "Bandage", "Bronze Shortsword", "Bronze Gloves"]
-    items = []
-    for _ in range(num):
-        optionI = random.randint(0, len(options) - 1)
-        items.append(options[optionI])
-    return items
-
-
-def check_links(llist, head, tail, expected_length):
-    print(f"Expected Head: {head}")
-    print(f"Actual Head: {llist.head}")
-    if head != llist.head.val:
-        print("Fail")
-        print("The linked list's head node does not have the expected value")
-        print("Check if nodes added to the head are set as the new head node")
-        return False
-    print(f"Expected Tail: {tail}")
-    print(f"Actual Tail: {llist.tail}")
-    if tail != llist.tail.val:
-        print("Fail")
-        print("The linked list's tail node does not have the expected value")
-        print("Check if nodes added to the tail are set as the new tail node")
-        return False
-
-    actual_length = 0
-    for _ in llist:
-        actual_length += 1
-    print(f"Expected Length: {expected_length}")
-    print(f"Actual Length: {actual_length}")
-    if expected_length != actual_length:
-        print("Fail")
-        print("The linked list is not the expected length of linked nodes")
-        print("Check if added nodes are set as the new head or tail")
-        return False
-    return True
 
 
 test_cases = submit_cases
