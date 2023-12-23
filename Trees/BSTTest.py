@@ -2,12 +2,12 @@ import random
 from Trees import BST
 
 run_cases = [
-    (3),
-    (5),
+    (5, "Ebork#0", "Nyx#14"),
+    (10, "Astram#1", "Marlo#29"),
 ]
 
 submit_cases = run_cases + [
-    (10),
+    (15, "Elian#2", "Yamil#42"),
 ]
 
 
@@ -55,27 +55,6 @@ class Character:
         return "".join(self.character_name)
 
 
-def ref_implementation(self, val):
-    if not self.val:
-        self.val = val
-        return
-
-    if self.val == val:
-        return
-
-    if val < self.val:
-        if self.left:
-            self.left.insert(val)
-            return
-        self.left = BST.BSTNode(val)
-        return
-
-    if self.right:
-        self.right.insert(val)
-        return
-    self.right = BST.BSTNode(val)
-
-
 def inorder(self, visited):
     if self.left:
         visited = self.left.inorder(visited)
@@ -98,7 +77,6 @@ def format_tree_string(bst_node, lines, level=0):
         format_tree_string(bst_node.left, lines, level + 1)
 
 
-setattr(BST.BSTNode, "ref_implementation", ref_implementation)
 setattr(BST.BSTNode, "inorder", inorder)
 setattr(BST.BSTNode, "__repr__", print_tree)
 
@@ -117,37 +95,41 @@ def get_characters(num):
     return characters
 
 
-def test(num_characters):
+def test(num_characters, min_character, max_character):
     characters = get_characters(num_characters)
     bst = BST.BSTNode()
     for character in characters:
-        bst.ref_implementation(character)
+        bst.insert(character)
     print("=====================================")
-    print("Expecting Tree:")
+    print("Tree:")
     print("-------------------------------------")
     print(bst)
     print("-------------------------------------\n")
-    actual_bst = BST.BSTNode()
-    for character in characters:
-        print(f"Inserting {character} into tree...")
-        actual_bst.insert(character)
-    print("\n")
-    print("Actual Tree:")
-    print("-------------------------------------")
-    print(actual_bst)
-    print("-------------------------------------")
-    if actual_bst.inorder([]) == bst.inorder([]):
-        print("Pass \n")
-        return True
-    print("Fail \n")
-    return False
+    print(f"Expected min: {min_character}")
+    print(f"Expected max: {max_character}")
+    try:
+        actual_min = bst.get_min()
+        actual_max = bst.get_max()
+        print(f"Actual min: {actual_min}")
+        print(f"Actual max: {actual_max}")
+        if (
+            actual_max.character_name == max_character
+            and actual_min.character_name == min_character
+        ):
+            print("Pass \n")
+            return True
+        print("Fail \n")
+        return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
 
 
 def main():
     passed = 0
     failed = 0
     for test_case in test_cases:
-        correct = test(test_case)
+        correct = test(*test_case)
         if correct:
             passed += 1
         else:

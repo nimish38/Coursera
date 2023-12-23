@@ -4,6 +4,18 @@ class BSTNode:
         self.right = None
         self.val = val
 
+    def get_min(self):
+        currNode = self
+        while currNode.left:
+            currNode = currNode.left
+        return currNode.val
+
+    def get_max(self):
+        currNode = self
+        while currNode.right:
+            currNode = currNode.right
+        return currNode.val
+
     def insert(self, val):
         if not self.val:
             self.val = val
