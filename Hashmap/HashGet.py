@@ -1,10 +1,9 @@
 class HashMap:
-    def insert(self, key, value):
+    def get(self, key):
         index = self.key_to_index(key)
-        self.hashmap[index] = (key, value)
-
-
-    # don't touch below this line
+        if self.hashmap[index]:
+            return self.hashmap[index][1]
+        raise Exception("sorry, key not found")
 
     def __init__(self, size):
         self.hashmap = [None for i in range(size)]
@@ -15,11 +14,13 @@ class HashMap:
             sum += ord(c)
         return sum % len(self.hashmap)
 
+    def insert(self, key, value):
+        i = self.key_to_index(key)
+        self.hashmap[i] = (key, value)
+
     def __repr__(self):
         final = ""
         for i, v in enumerate(self.hashmap):
             if v != None:
-                final += f" - {i}: {str(v)}\n"
-            else:
-                final += f" - {i}: None\n"
+                final += f" - {str(v)}\n"
         return final
