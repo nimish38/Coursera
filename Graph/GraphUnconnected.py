@@ -2,7 +2,7 @@ class Graph:
     def unconnected_vertices(self):
         unconnected = []
         for vertex in self.graph.keys():
-            if len(vertex.keys()) == 0:
+            if len(self.graph[vertex]) == 0:
                 unconnected.append(vertex)
         return unconnected
 
