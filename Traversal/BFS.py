@@ -3,9 +3,10 @@ class Graph:
         visited = []
         to_visit = [v]
         while len(to_visit) > 0:
-            node = to_visit.pop()
+            node = to_visit.pop(0)
             visited.append(node)
-            for neighbor in sorted(self.graph[node]):
+            neighbors = sorted(self.graph[node])
+            for neighbor in neighbors:
                 if neighbor not in visited and neighbor not in to_visit:
                     to_visit.append(neighbor)
 
