@@ -1,16 +1,23 @@
 class Graph:
     def bfs_path(self, start, end):
         routes = [([start], 0)]
+        result = []
         while len(routes) > 0:
-            last = routes.pop()
+            last = routes.pop(0)
             current, level = last[0], last[1]
             for neighbor in self.graph[current[-1]]:
-                new_route = current + [neighbor]
-                if neighbor == end:
-                    return new_route
-                routes.append((new_route, level + 1))
-        return None
+                if neighbor not in current:
+                    new_route = current + [neighbor]
+                    if neighbor == end:
+                        if len(result) > 0 and result[0][1] > level + 1:
+                            result.pop()
+                        result.append((new_route, level + 1))
+                    else:
+                        routes.append((new_route, level + 1))
 
+        if len(result) > 0:
+            return result[0][0]
+        return None
 
     # don't touch below this line
 
