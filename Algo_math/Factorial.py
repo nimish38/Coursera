@@ -1,6 +1,4 @@
 def num_possible_orders(num_posts):
-    res = 1
-    while num_posts > 1:
-        res *= num_posts
-        num_posts -= 1
-    return res
+    if num_posts == 0 or num_posts == 1:
+        return 1
+    return num_posts * num_possible_orders(num_posts - 1)
