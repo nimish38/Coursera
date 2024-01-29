@@ -4,21 +4,20 @@ def dijkstra(graph, src, dest):
     distances = {}
 
     for node in graph.keys():
+        unvisited.add(node)
         if node == src:
             distances[node] = 0
         else:
-            unvisited.add(node)
             distances[node] = float("INF")
 
     while len(unvisited) > 0:
-        closest_node = get_min_dist_node(graph[src], unvisited)
+        closest_node = get_min_dist_node(distances, unvisited)
         unvisited.remove(closest_node)
-        predecessor[closest_node] = src
-        distances[closest_node] = graph[src][closest_node]
+
         if closest_node == dest:
             return get_path(dest, predecessor)
         else:
-            for neighbor in graph[closest_node].keys():
+            for neighbor in graph[closest_node]:
                 if neighbor in unvisited:
                     first_distance = distances[closest_node]
                     second_distance = graph[closest_node][neighbor]
@@ -26,7 +25,6 @@ def dijkstra(graph, src, dest):
                     if combined_dist < distances[neighbor]:
                         distances[neighbor] = combined_dist
                         predecessor[neighbor] = closest_node
-        src = closest_node
 
 
 def get_path(dest, predecessors):
