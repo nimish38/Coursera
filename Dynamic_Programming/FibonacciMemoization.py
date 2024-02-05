@@ -1,3 +1,4 @@
+import time
 def fibonacci(n, precomputed={}):
     if n == 0:
         return 0
@@ -7,7 +8,7 @@ def fibonacci(n, precomputed={}):
 
     if n - 1 not in precomputed:
         precomputed[n - 1] = fibonacci(n - 1, precomputed)
-    
+
     if n - 2 not in precomputed:
         precomputed[n - 2] = fibonacci(n - 2, precomputed)
 
@@ -21,4 +22,7 @@ def main():
         print(fibonacci(i))
 
 
+start_time = time.time()
 main()
+end_time = time.time()
+print("Time taken: ", end_time - start_time, "seconds")
